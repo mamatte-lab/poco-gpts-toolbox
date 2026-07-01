@@ -126,8 +126,9 @@ end $$;
 
 -- 初期カテゴリ
 insert into public.categories(kind, name, sort_order) values
-('gpt','note',10),('gpt','Threads',20),('gpt','デザイン添削',30),('gpt','画像生成',40),
-('gpt','LINEスタンプ',50),('gpt','商品設計',60),('gpt','師匠相談文',70),('gpt','ラジオ台本',80),('gpt','その他',90),
+('gpt','note',10),('gpt','Threads',20),('gpt','Instagram',30),('gpt','LINE',40),('gpt','Brain',50),
+('gpt','Substack',60),('gpt','デザイン制作',70),('gpt','デザイン添削',80),('gpt','画像生成',90),
+('gpt','LINEスタンプ',100),('gpt','商品設計',110),('gpt','師匠相談文',120),('gpt','ラジオ台本',130),('gpt','その他',140),
 ('prompt','SNS投稿',10),('prompt','note記事',20),('prompt','文章添削',30),('prompt','デザイン添削',40),
 ('prompt','画像生成',50),('prompt','LINEスタンプ',60),('prompt','商品設計',70),('prompt','リサーチ',80),
 ('prompt','師匠相談文',90),('prompt','ラジオ台本',100),('prompt','AIっぽさ除去',110),('prompt','その他',120)

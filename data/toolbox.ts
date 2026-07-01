@@ -1,4 +1,5 @@
 import type { GptItem, PromptItem } from "@/lib/types";
+import { addedGpts20260701 } from "@/data/gpts-2026-07-01";
 
 // 新しいGPTはこの配列に1件追加するだけで画面へ反映されます。
 export const gpts: GptItem[] = [
@@ -8,6 +9,7 @@ export const gpts: GptItem[] = [
   { id: "image-prompt", name: "IMG｜画像生成プロンプト", category: "画像生成", useCase: "目的に合った高品質な画像生成プロンプトを作る", starter: "〇〇のイメージ画像がほしいです", relatedPrompts: ["CREATE｜画像生成｜noteサムネ"], label: "二軍", favorite: false, url: "https://chatgpt.com/gpts", addedAt: "2026-06-12" },
   { id: "line-appe", name: "LINE｜あっぺスタンプ", category: "LINEスタンプ", useCase: "LINEスタンプの感情・ポーズ・表情を言語化する", starter: "〇〇の感情でスタンプ案を出して", relatedPrompts: [], label: "二軍", favorite: false, url: "https://chatgpt.com/gpts", addedAt: "2026-06-08" },
   { id: "biz-product", name: "BIZ｜商品設計", category: "商品設計", useCase: "コンセプト、ペルソナ、販売導線を整理する", starter: "〇〇の商品設計を一緒に考えて", relatedPrompts: [], label: "保管", favorite: false, url: "https://chatgpt.com/gpts", addedAt: "2026-05-30" },
+  ...addedGpts20260701,
 ];
 
 // 新しいプロンプトも同様に、この配列へ追加できます。
@@ -19,5 +21,5 @@ export const prompts: PromptItem[] = [
   { id: "image-note", name: "CREATE｜画像生成｜noteサムネ", category: "画像生成", useCase: "note見出し画像を作りたいとき", status: "二軍", body: "note記事の見出し画像を作るための画像生成プロンプトを作ってください。記事タイトル、読者に伝えたい感情、掲載場所、サイズ比率、文字量、雰囲気、避けたい表現を整理して、画像生成AIにそのまま入れられる形にしてください。", source: "自作・画像制作用", relatedGpt: "IMG｜画像生成プロンプト", favorite: false, addedAt: "2026-06-10" },
 ];
 
-export const gptCategories = ["note", "Threads", "デザイン添削", "画像生成", "LINEスタンプ", "商品設計", "師匠相談文", "ラジオ台本", "その他"];
+export const gptCategories = ["note", "Threads", "Instagram", "LINE", "Brain", "Substack", "デザイン制作", "デザイン添削", "画像生成", "LINEスタンプ", "商品設計", "師匠相談文", "ラジオ台本", "その他"];
 export const promptCategories = ["SNS投稿", "note記事", "文章添削", "デザイン添削", "画像生成", "LINEスタンプ", "商品設計", "リサーチ", "師匠相談文", "ラジオ台本", "AIっぽさ除去", "その他"];
