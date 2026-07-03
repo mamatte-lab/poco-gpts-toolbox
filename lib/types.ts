@@ -33,6 +33,20 @@ export interface PromptItem {
   deletedAt?: string | null;
 }
 
+export interface ResourceLink {
+  id: string;
+  name: string;
+  url: string;
+  category: string;
+  description: string;
+  tags: string[];
+  favorite: boolean;
+  addedAt: string;
+  sortOrder?: number;
+  updatedAt?: string;
+  deletedAt?: string | null;
+}
+
 export interface CategoryItem { id: string; kind: "gpt" | "prompt"; name: string; sortOrder: number; }
 export interface SiteSettings { siteName: string; subcopy: string; }
 export interface AuditLog { id: number; tableName: string; recordId: string; action: string; changedBy: string; createdAt: string; }

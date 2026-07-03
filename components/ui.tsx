@@ -10,16 +10,20 @@ export function Badge({ children, tone = "gray" }: { children: React.ReactNode; 
   return <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-bold ${colors[tone]}`}>{children}</span>;
 }
 
-export function FavoriteButton({ id, type, initial = false }: { id: string; type: "gpt" | "prompt"; initial?: boolean }) {
-  const [active, setActive] = useState(initial);
+export function FavoriteButton({ id, type, initial = false }: { id: string; type: "gpt" | "prompt" | "link"; initial?: boolean }) {
+  const [active, setActive] = useState(initial), [saving, setSaving] = useState(false);
   const router = useRouter();
   useEffect(() => setActive(initial), [initial]);
   const toggle = async () => {
+    if (saving) return;
+    setSaving(true);
     const previous = active, next = !active; setActive(next);
-    const response = await fetch("/api/favorite", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, type, favorite: next }) });
-    if (!response.ok) setActive(previous); else router.refresh();
+    try {
+      const response = await fetch("/api/favorite", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, type, favorite: next }) });
+      if (!response.ok) setActive(previous); else router.refresh();
+    } catch { setActive(previous); } finally { setSaving(false); }
   };
-  return <button onClick={toggle} aria-label={active ? "お気に入りから外す" : "お気に入りに追加"} className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border transition ${active ? "border-butter bg-butter-soft text-[#D39A00]" : "border-line bg-white text-muted hover:border-butter"}`}>{active ? <StarSolidIcon className="h-5 w-5" /> : <StarIcon className="h-5 w-5" />}</button>;
+  return <button onClick={toggle} disabled={saving} aria-label={active ? "お気に入りから外す" : "お気に入りに追加"} className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border transition disabled:cursor-wait disabled:opacity-60 ${active ? "border-butter bg-butter-soft text-[#D39A00]" : "border-line bg-white text-muted hover:border-butter"}`}>{active ? <StarSolidIcon className="h-5 w-5" /> : <StarIcon className="h-5 w-5" />}</button>;
 }
 
 export function CopyButton({ text, compact = false }: { text: string; compact?: boolean }) {

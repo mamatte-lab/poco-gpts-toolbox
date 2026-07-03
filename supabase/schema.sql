@@ -45,6 +45,22 @@ create table if not exists public.prompts (
   deleted_at timestamptz
 );
 
+create table if not exists public.resource_links (
+  id text primary key,
+  name text not null,
+  url text not null,
+  category text not null default 'その他',
+  description text not null default '',
+  tags text[] not null default '{}',
+  favorite boolean not null default false,
+  sort_order integer not null default 0,
+  added_at date not null default current_date,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  deleted_at timestamptz
+);
+create unique index if not exists resource_links_active_url_key on public.resource_links(url) where deleted_at is null;
+
 create table if not exists public.categories (
   id uuid primary key default gen_random_uuid(),
   kind text not null check (kind in ('gpt','prompt')),
@@ -102,15 +118,20 @@ drop trigger if exists gpts_touch on public.gpts;
 create trigger gpts_touch before update on public.gpts for each row execute function public.touch_updated_at();
 drop trigger if exists prompts_touch on public.prompts;
 create trigger prompts_touch before update on public.prompts for each row execute function public.touch_updated_at();
+drop trigger if exists resource_links_touch on public.resource_links;
+create trigger resource_links_touch before update on public.resource_links for each row execute function public.touch_updated_at();
 drop trigger if exists settings_touch on public.site_settings;
 create trigger settings_touch before update on public.site_settings for each row execute function public.touch_updated_at();
 drop trigger if exists gpts_audit on public.gpts;
 create trigger gpts_audit after insert or update or delete on public.gpts for each row execute function public.write_audit_log();
 drop trigger if exists prompts_audit on public.prompts;
 create trigger prompts_audit after insert or update or delete on public.prompts for each row execute function public.write_audit_log();
+drop trigger if exists resource_links_audit on public.resource_links;
+create trigger resource_links_audit after insert or update or delete on public.resource_links for each row execute function public.write_audit_log();
 
 alter table public.gpts enable row level security;
 alter table public.prompts enable row level security;
+alter table public.resource_links enable row level security;
 alter table public.categories enable row level security;
 alter table public.site_settings enable row level security;
 alter table public.audit_logs enable row level security;
@@ -118,7 +139,7 @@ alter table public.audit_logs enable row level security;
 do $$
 declare t text;
 begin
-  foreach t in array array['gpts','prompts','categories','site_settings','audit_logs'] loop
+  foreach t in array array['gpts','prompts','resource_links','categories','site_settings','audit_logs'] loop
     execute format('drop policy if exists "owner all %s" on public.%I', t, t);
     execute format('create policy "owner all %s" on public.%I for all using (public.is_toolbox_owner()) with check (public.is_toolbox_owner())', t, t);
   end loop;

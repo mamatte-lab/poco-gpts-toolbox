@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import {
-  ArrowRightStartOnRectangleIcon, Bars3Icon, BookOpenIcon, Cog6ToothIcon, HomeIcon, InboxStackIcon, MagnifyingGlassIcon,
+  ArrowRightStartOnRectangleIcon, Bars3Icon, BookOpenIcon, Cog6ToothIcon, HomeIcon, InboxStackIcon, LinkIcon, MagnifyingGlassIcon,
   SparklesIcon, StarIcon, TagIcon, XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { createClient } from "@/lib/supabase/browser";
@@ -14,6 +14,7 @@ const nav = [
   { href: "/", label: "ホーム", icon: HomeIcon },
   { href: "/gpts", label: "すべてのGPT", icon: SparklesIcon },
   { href: "/prompts", label: "プロンプトの引き出し", icon: InboxStackIcon },
+  { href: "/links", label: "リンク保管庫", icon: LinkIcon },
   { href: "/favorites", label: "お気に入り", icon: StarIcon },
   { href: "/labels", label: "ラベル管理", icon: TagIcon },
   { href: "/manage", label: "道具を編集", icon: Cog6ToothIcon },
@@ -66,7 +67,7 @@ export function AppShell({ children, siteName, subcopy }: { children: React.Reac
             </div>
             <form onSubmit={submit} className="relative ml-auto w-full max-w-xl">
               <MagnifyingGlassIcon className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" />
-              <input value={query} onChange={(e) => setQuery(e.target.value)} className="w-full rounded-2xl border border-line bg-white py-3 pl-12 pr-4 text-sm outline-none transition placeholder:text-muted/70 focus:border-butter focus:ring-4 focus:ring-butter-soft" placeholder="GPT・プロンプトを検索" />
+              <input value={query} onChange={(e) => setQuery(e.target.value)} className="w-full rounded-2xl border border-line bg-white py-3 pl-12 pr-4 text-sm outline-none transition placeholder:text-muted/70 focus:border-butter focus:ring-4 focus:ring-butter-soft" placeholder="GPT・プロンプト・リンクを検索" />
             </form>
           </div>
         </header>

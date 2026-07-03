@@ -21,9 +21,11 @@ export async function POST(request: Request, { params }: { params: Promise<{ kin
   const { kind } = await params, { supabase, table } = await context(kind);
   if (!supabase) return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); if (!table) return NextResponse.json({ error: "Unknown kind" }, { status: 404 });
   const input = await request.json(); if (!input.name || !input.category) return NextResponse.json({ error: "名前とカテゴリは必須です" }, { status: 400 });
+  const { data: duplicate } = await supabase.from(table).select("id").eq("name", String(input.name).trim()).is("deleted_at", null).maybeSingle();
+  if (duplicate) return NextResponse.json({ error: "同じ名前はすでに登録されています" }, { status: 409 });
   input.id ||= crypto.randomUUID(); input.addedAt ||= new Date().toISOString().slice(0, 10);
   const payload = kind === "gpt" ? gptData(input) : promptData(input);
-  const { error } = await supabase.from(table).insert(payload as never);
+  const { error } = await supabase.from(table).upsert(payload as never, { onConflict: "id", ignoreDuplicates: true });
   return error ? NextResponse.json({ error: error.message }, { status: 400 }) : NextResponse.json({ ok: true, id: input.id });
 }
 
